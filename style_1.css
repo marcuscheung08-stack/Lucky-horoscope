@@ -1,0 +1,581 @@
+/* ══════════════════════════════════════════════════════
+   LUCKY — Rat × Pisces
+   Built on the same tokens and idioms as HELPFUL:
+   cream/blue/pink pastels, Space Grotesk + Caveat,
+   fixed centre nav, scroll-snap sections, hand-drawn
+   lopsided borders and sketch-filtered rings.
+   ══════════════════════════════════════════════════════ */
+
+/* ── TOKENS ─────────────────────────────────────────── */
+:root {
+  --cream:   #F5F0E8;
+  --blue:    #C8D8E8;
+  --pink:    #E8CFC8;
+  --grey:    #4A4A4A;
+  --dark:    #2B2B2B;
+  --white:   #FFFFFF;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-hand:    'Caveat', cursive;
+
+  /* the wandering pen outline, reused everywhere */
+  --doodle-radius:  255px 15px 225px 15px / 15px 225px 15px 255px;
+  --doodle-radius2: 225px 15px 255px 15px / 15px 255px 15px 225px;
+}
+
+/* ── BASE ───────────────────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-snap-type: y proximity;
+  scroll-behavior: smooth;
+  overflow-y: scroll;
+}
+
+body {
+  font-family: var(--font-display);
+  background-color: var(--white);
+  color: var(--dark);
+}
+
+/* ══ PAGE BACKDROP ═══════════════════════════════════
+   The hand-drawn sky sits behind the whole site, pinned
+   to the viewport so it stays put while the page scrolls.
+   Two fixed layers rather than background-attachment:fixed,
+   which stutters badly on iOS Safari.
+   ::before is the drawing, ::after is the white veil that
+   knocks it back so text stays readable.               */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+body::before {
+  z-index: -2;
+  background-image: url('background.png');
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-color: var(--white);   /* letterbox fill on odd ratios */
+}
+body::after {
+  z-index: -1;
+  background: rgba(255, 255, 255, .58);   /* the dimmer */
+}
+
+/* ── NAV ────────────────────────────────────────────── */
+.nav-bar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  z-index: 100;
+  background: rgba(255, 255, 255, .88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid #eee;
+  padding: 8px 24px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+.nav-logo {
+  grid-column: 2;
+  justify-self: center;
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: 54px;
+  line-height: 1;
+  letter-spacing: 1px;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 2px;
+  color: var(--dark);
+}
+
+.hamburger {
+  background: none; border: none; cursor: pointer;
+  display: flex; flex-direction: column; gap: 5px;
+  padding: 4px; grid-column: 3; justify-self: end;
+}
+.hamburger span {
+  display: block; width: 35px; height: 7px;
+  background: var(--dark); border-radius: 2px; transition: .3s;
+}
+
+.side-menu {
+  position: fixed;
+  top: 0; right: -280px;
+  width: 280px; height: 100%;
+  background: var(--white);
+  border-left: 1px solid #eee;
+  z-index: 200; padding: 32px 24px;
+  transition: right .3s ease;
+}
+.side-menu.open { right: 0; }
+.menu-home {
+  display: block;
+  font-size: 13px; font-weight: 600;
+  color: var(--grey); text-decoration: none;
+  margin-bottom: 10px;
+}
+.menu-home:hover { color: var(--dark); }
+
+.menu-head {
+  font-family: var(--font-hand);
+  font-size: 30px; font-weight: 700; line-height: 1.1;
+}
+.menu-sub {
+  font-size: 11px; text-transform: uppercase;
+  letter-spacing: .14em; color: var(--grey); margin-bottom: 14px;
+}
+
+/* the twelve signs — scrolls inside the drawer on short screens */
+.sign-list {
+  display: flex; flex-direction: column;
+  max-height: calc(100vh - 190px);
+  overflow-y: auto;
+}
+.sign-list a {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  grid-template-areas: "g n" "g d";
+  align-items: center;
+  column-gap: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  padding: 10px 8px; cursor: pointer;
+  color: var(--dark); text-decoration: none; transition: .15s;
+}
+.sign-list a:hover { background: rgba(200,216,232,.35); }
+.sign-list a[aria-current="page"] {
+  background: var(--dark); color: #fff; border-radius: 10px;
+  border-bottom-color: transparent;
+}
+.sign-g { grid-area: g; font-size: 24px; line-height: 1; font-variant-emoji: text; }
+.sign-n {
+  grid-area: n;
+  font-family: var(--font-display);
+  font-weight: 600; font-size: 16px;
+}
+.sign-d { grid-area: d; font-size: 11px; opacity: .65; }
+
+.menu-close {
+  background: none; border: none; font-size: 24px;
+  cursor: pointer; margin-bottom: 10px; color: var(--dark);
+  display: block; padding: 0;
+}
+
+.overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.2); z-index: 150;
+}
+.overlay.open { display: block; }
+
+/* ── SECTIONS ───────────────────────────────────────── */
+.snap-section {
+  scroll-snap-align: start;
+  min-height: 100vh;
+  padding: 96px 0 56px;
+  display: flex; align-items: center;
+  position: relative; overflow: hidden;
+}
+
+.section-heading {
+  font-family: var(--font-display);
+  font-weight: 700; font-size: 32px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  margin-bottom: 14px;
+}
+.section-text {
+  font-size: 17px; line-height: 1.7; color: var(--grey);
+}
+
+/* ── HERO ───────────────────────────────────────────── */
+.hero { background: transparent; }
+
+.hero-eyebrow {
+  font-size: 13px; text-transform: uppercase;
+  letter-spacing: .16em; color: var(--grey); margin-bottom: 10px;
+}
+
+.hero-tagline {
+  font-family: var(--font-hand);
+  font-size: clamp(42px, 6vw, 66px);
+  font-weight: 700; line-height: 1.1;
+  margin-bottom: 14px; color: var(--dark);
+}
+.hero-tagline span {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 3px;
+}
+
+.hero-sub {
+  font-family: var(--font-display);
+  font-size: 15px; letter-spacing: .04em;
+  color: var(--grey); margin-bottom: 22px;
+}
+
+.day-switch { display: flex; gap: 8px; justify-content: center; margin-bottom: 26px; }
+
+.scroll-hint {
+  font-family: var(--font-hand);
+  font-size: 22px; color: var(--grey);
+  animation: bob 2.2s ease-in-out infinite;
+}
+@keyframes bob {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(7px); }
+}
+
+/* the two hand-drawn characters */
+.doodle-char { width: 100%; max-width: 260px; text-align: center; }
+.doodle-char svg { width: 100%; height: auto; display: block; }
+.row > div:first-child .doodle-char { transform: rotate(-1.6deg); }
+.row > div:last-child  .doodle-char { transform: rotate(1.8deg); }
+.doodle-name {
+  font-family: var(--font-hand);
+  font-size: 28px; font-weight: 700;
+  margin-top: 2px; transform: rotate(-2deg);
+}
+.doodle-dates {
+  font-size: 11px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--grey);
+  transform: rotate(-2deg);
+}
+
+/* the zodiac glyph sits inside the drawn circle. It is a font
+   character, not a path, so it can swap without redrawing.   */
+.sign-glyph {
+  font-size: 78px;
+  fill: var(--dark);
+  font-family: var(--font-display);
+  font-variant-emoji: text;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hint { animation: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* ── HAND-DRAWN BOX ─────────────────────────────────
+   Eight radius values instead of four, so every corner
+   curves differently and the edge wanders like a pen
+   line. The ::after is a second, fainter pass.        */
+.doodle-box {
+  position: relative;
+  background: var(--white);
+  border: 2px solid var(--dark);
+  border-radius: var(--doodle-radius);
+  box-shadow: 0 4px 14px rgba(0,0,0,.06);
+  padding: 26px 24px;
+  transform: rotate(.2deg);
+}
+.doodle-box::after {
+  content: '';
+  position: absolute; inset: -5px;
+  border: 2px solid var(--dark);
+  border-radius: var(--doodle-radius2);
+  opacity: .2;
+  transform: rotate(-.4deg);
+  pointer-events: none;
+}
+
+/* ── SECTION 2 — THE ITEM ───────────────────────────── */
+.section-item { background: transparent; }
+
+.luck-dial {
+  position: relative;
+  width: 260px; height: 260px;
+  max-width: 74vw; max-height: 74vw;
+  margin-bottom: 22px;
+}
+.luck-dial.doodle { transform: rotate(-1.2deg); }
+.ring { width: 100%; height: 100%; display: block; transform: rotate(-90deg); }
+
+.ring-track {
+  fill: none; stroke: rgba(43,43,43,.14);
+  stroke-width: 9; stroke-linecap: round;
+  filter: url(#roughen);
+}
+.ring-sketch {
+  fill: none; stroke: rgba(43,43,43,.22);
+  stroke-width: 5; stroke-linecap: round;
+  filter: url(#roughen2);
+  transform: rotate(2deg); transform-origin: 50% 50%;
+}
+.ring-fill {
+  fill: none; stroke: var(--dark);
+  stroke-width: 11; stroke-linecap: round;
+  filter: url(#roughen);
+  transition: stroke-dashoffset .9s ease, stroke .4s;
+}
+
+.dial-face {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 2px; text-align: center; pointer-events: none;
+}
+.dial-face::before {
+  content: '';
+  position: absolute; left: 16%; top: 16%; right: 16%; bottom: 16%;
+  background: rgba(255,255,255,.72);
+  border-radius: 50%; z-index: -1;
+}
+.dial-num {
+  font-family: var(--font-hand);
+  font-size: 82px; font-weight: 700; line-height: 1;
+  letter-spacing: 2px;
+  transform: rotate(1.2deg);
+}
+.dial-label {
+  font-family: var(--font-hand);
+  font-size: 21px; color: var(--grey);
+  transform: rotate(1.2deg);
+}
+
+.speech-bubble {
+  background: var(--white);
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  padding: 14px 18px;
+  font-family: var(--font-hand);
+  font-size: 19px; line-height: 1.45;
+  position: relative; max-width: 340px;
+}
+.speech-bubble::after {
+  content: '';
+  position: absolute; top: -14px; left: 30px;
+  border: 7px solid transparent;
+  border-bottom-color: #ddd;
+}
+
+.item-card { padding: 32px 30px; text-align: center; max-width: 560px; margin: 0 auto; }
+.item-icon { font-size: 62px; line-height: 1; margin-bottom: 10px; }
+.item-name {
+  font-family: var(--font-hand);
+  font-size: clamp(32px, 4.4vw, 46px);
+  font-weight: 700; line-height: 1.15; margin-bottom: 10px;
+}
+.item-note { font-size: 16px; line-height: 1.65; color: var(--grey); }
+.item-stamp {
+  margin-top: 16px; font-size: 12px;
+  text-transform: uppercase; letter-spacing: .14em; color: #9c968c;
+}
+
+/* ── SECTION 3 — DETAILS ────────────────────────────── */
+.section-details { background: transparent; }
+
+.mini-card { text-align: center; height: 100%; padding: 22px 16px; }
+.row > div:nth-child(even) .mini-card { transform: rotate(-.35deg); }
+
+.mini-label {
+  font-size: 11px; text-transform: uppercase;
+  letter-spacing: .14em; color: var(--grey); margin-bottom: 10px;
+}
+.mini-value {
+  font-family: var(--font-hand);
+  font-size: 30px; font-weight: 700; line-height: 1.15;
+  margin-bottom: 8px;
+}
+.mini-big {
+  font-family: var(--font-hand);
+  font-size: 62px; font-weight: 700; line-height: 1; margin-bottom: 8px;
+}
+.mini-note { font-size: 13px; line-height: 1.5; color: var(--grey); }
+
+.swatch {
+  display: block; width: 54px; height: 54px;
+  margin: 0 auto 10px;
+  border: 2px solid var(--dark);
+  border-radius: 62% 38% 45% 55% / 52% 48% 52% 48%;
+}
+
+.strip-card { padding: 20px 22px; height: 100%; }
+
+/* the character card leads with the name, so it gets its own
+   scale rather than borrowing .strip-text                    */
+.char-card { transform: rotate(.28deg); }
+.char-name {
+  font-family: var(--font-hand);
+  font-size: 34px; font-weight: 700;
+  line-height: 1.15; margin-bottom: 6px;
+}
+.strip-card.warn { transform: rotate(-.3deg); background: #FDFBF7; }
+.strip-text {
+  font-family: var(--font-hand);
+  font-size: 25px; line-height: 1.35;
+}
+
+/* ── SECTION 4 — LIVE HOROSCOPE ─────────────────────── */
+.section-horoscope { background: transparent; }
+
+.horo-card { padding: 24px 28px; }
+.horo-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap; margin-bottom: 12px;
+}
+
+/* the badge is the whole status UI: live / cached / offline */
+.horo-badge {
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .1em;
+  border-radius: 999px; padding: 5px 12px;
+  border: 1px solid #ddd; color: var(--grey); background: var(--white);
+  display: inline-flex; align-items: center; gap: 7px;
+}
+.horo-badge::before {
+  content: ''; width: 7px; height: 7px;
+  border-radius: 50%; background: currentColor;
+}
+.horo-badge.live    { color: #3F7D52; border-color: #BED9C6; background: #F1F8F3; }
+.horo-badge.cached  { color: #7A6A3F; border-color: #E2D6B4; background: #FBF7EC; }
+.horo-badge.offline { color: #8A5F5F; border-color: #E3C9C9; background: #FBF1F1; }
+.horo-badge.loading::before { animation: pulse 1.1s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity: .25; } 50% { opacity: 1; } }
+
+.horo-text {
+  font-family: var(--font-hand);
+  font-size: 25px; line-height: 1.4;
+  min-height: 3.5em;
+}
+.horo-source { margin-top: 14px; font-size: 12px; color: #9c968c; }
+.horo-source a { color: inherit; }
+
+/* ── SECTION 5 — SIGNS ──────────────────────────────── */
+.section-signs { background: transparent; }
+
+.brings { display: flex; gap: 28px; flex-wrap: wrap; margin-top: 24px; }
+.brings-col { flex: 1 1 200px; }
+.brings-head {
+  font-size: 11px; text-transform: uppercase;
+  letter-spacing: .14em; color: var(--grey); margin-bottom: 6px;
+}
+.brings-text {
+  font-family: var(--font-hand);
+  font-size: 26px; line-height: 1.3;
+}
+
+.element-card { text-align: center; max-width: 300px; }
+.elem-pair {
+  display: flex; justify-content: center;
+  gap: 22px; margin: 6px 0 12px;
+}
+.elem-glyph { font-size: 54px; line-height: 1; }
+.elem-name {
+  font-family: var(--font-hand);
+  font-size: 20px; font-weight: 700; line-height: 1.2;
+}
+
+/* ── SECTION 6 — SAVE ───────────────────────────────── */
+.section-save { background: transparent; }
+
+.save-actions {
+  display: flex; gap: 12px; justify-content: center;
+  flex-wrap: wrap; margin-bottom: 26px;
+}
+
+.bth {
+  font-family: var(--font-display);
+  font-weight: 600; font-size: 15px;
+  border: none; border-radius: 999px;
+  padding: 13px 24px; cursor: pointer;
+  transition: transform .15s, box-shadow .15s, opacity .15s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.bth:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.14); }
+.bth:disabled { opacity: .45; cursor: not-allowed; }
+.bth-primary { background: var(--dark);  color: #fff; }
+.bth-soft    { background: var(--white); color: var(--dark); border: 1px solid #ddd; }
+
+.chip {
+  font-family: var(--font-display);
+  font-size: 13px; font-weight: 600;
+  border: 1px solid #ddd; background: var(--white); color: var(--dark);
+  border-radius: 999px; padding: 8px 15px; cursor: pointer;
+  transition: .15s;
+}
+.chip:hover { border-color: var(--dark); }
+.chip[aria-pressed="true"] { background: var(--dark); color: #fff; border-color: var(--dark); }
+
+.disclaimer { font-size: 13px; color: #9c968c; }
+
+/* ── TOAST ──────────────────────────────────────────── */
+.toast {
+  position: fixed; left: 50%; bottom: 26px;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--dark); color: #fff;
+  font-size: 14px; font-weight: 600;
+  padding: 11px 20px; border-radius: 999px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .25s, transform .25s;
+  z-index: 300;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── ANIMATION ──────────────────────────────────────── */
+.animate-in { animation: fadeSlideUp .6s ease both; }
+.delay-1 { animation-delay: .1s; }
+.delay-2 { animation-delay: .2s; }
+.delay-3 { animation-delay: .3s; }
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────── */
+@media (max-width: 767px) {
+  .hide-mobile { display: none !important; }
+  .doodle-char { max-width: 150px; }
+  .doodle-name { font-size: 22px; }
+  .nav-logo { font-size: 42px; }
+  .snap-section { padding: 84px 0 44px; }
+  .section-heading { font-size: 26px; }
+  .brings { gap: 18px; }
+  .horo-card { padding: 20px 18px; }
+  .horo-text { font-size: 22px; }
+  html { scroll-snap-type: none; }
+}
+
+
+/* ── HOME: THE TWELVE ───────────────────────────────── */
+/* six across, so the twelve land as two clean rows rather
+   than the 7 + 5 that flex-wrap produced */
+.sign-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.sign-card {
+  text-align: center;
+  text-decoration: none;
+  color: var(--dark);
+  padding: 16px 10px;
+  transition: transform .18s;
+}
+.sign-card:nth-child(even) { transform: rotate(-.5deg); }
+.sign-card:hover { transform: translateY(-4px) rotate(.4deg); }
+
+.sign-card .g {
+  display: block; font-size: 38px; line-height: 1; margin-bottom: 4px;
+  font-variant-emoji: text;
+}
+.sign-card .n {
+  display: block;
+  font-family: var(--font-hand);
+  font-size: 26px; font-weight: 700; line-height: 1.1;
+}
+.sign-card .d {
+  display: block; font-size: 11px;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--grey);
+}
+
+@media (max-width: 991px) { .sign-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 575px) { .sign-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }

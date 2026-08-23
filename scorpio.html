@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUCKY — Rat × Scorpio</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Google Fonts — same pairing as HELPFUL -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style_1.css" />
+  <meta name="theme-color" content="#2B2B2B" />
+</head>
+
+<body data-sign="scorpio">
+
+  <!-- ══ SKETCH FILTER ═══════════════════════════════════
+       One feTurbulence + feDisplacementMap, reused by every
+       drawn line on the page. Same trick as the timer dial. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="roughen">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="n" />
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+    <filter id="roughen2">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" seed="19" result="n" />
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </svg>
+
+  <!-- ── NAV ──────────────────────────────────────────── -->
+  <nav class="nav-bar">
+    <div></div>
+    <a class="nav-logo" href="#top" aria-label="LUCKY — back to top">LUCKY</a>
+    <button class="hamburger" id="menuBtn" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="overlay" id="overlay"></div>
+  <div class="side-menu" id="sideMenu">
+    <button class="menu-close" id="menuClose" aria-label="Close menu">✕</button>
+    <a class="menu-home" href="index_2.html">← All signs</a>
+    <p class="menu-head">Year of the Rat ×</p>
+    <p class="menu-sub">Pick your star sign</p>
+    <!-- the twelve buttons are built by script.js from SIGNS -->
+    <div class="sign-list" id="signList"></div>
+  </div>
+
+  <!-- ── SECTION 1 — HERO ─────────────────────────────── -->
+  <section class="snap-section hero" id="top">
+    <div class="container">
+      <div class="row align-items-center g-4">
+
+        <!-- left character — the Rat -->
+        <div class="col-6 col-md-3 d-flex justify-content-center">
+          <div class="doodle-char animate-in">
+            <svg viewBox="0 0 270 210" role="img" aria-label="A hand-drawn rat">
+              <g filter="url(#roughen)" fill="none" stroke="#2B2B2B" stroke-width="4"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M64 142 C 40 158 18 148 20 128 C 21 116 30 112 36 116" />
+                <ellipse cx="128" cy="132" rx="66" ry="44" fill="#FFFFFF" />
+                <circle cx="196" cy="118" r="32" fill="#FFFFFF" />
+                <circle cx="190" cy="90" r="16" fill="#C8D8E8" />
+                <path d="M96 170 q 12 13 25 0" />
+                <path d="M146 172 q 12 13 25 0" />
+                <path d="M228 124 l 30 -11 M230 131 l 32 3 M226 137 l 24 15" />
+              </g>
+              <circle cx="209" cy="112" r="4" fill="#2B2B2B" />
+              <circle cx="226" cy="126" r="5.5" fill="#E8CFC8" stroke="#2B2B2B" stroke-width="2.5" />
+            </svg>
+            <p class="doodle-name">Rat</p>
+          </div>
+        </div>
+
+        <!-- centre text -->
+        <div class="col-12 col-md-6 text-center order-3 order-md-2">
+          <p class="hero-eyebrow animate-in">Today's lucky item for</p>
+          <h1 class="hero-tagline animate-in delay-1">
+            Year of the Rat,<br>
+            <span id="signLine">born under Scorpio</span>
+          </h1>
+          <p class="hero-sub animate-in delay-2" id="heroDate">—</p>
+
+          <div class="day-switch animate-in delay-3" id="daySwitch">
+            <button class="chip" data-offset="-1">Yesterday</button>
+            <button class="chip" data-offset="0" aria-pressed="true">Today</button>
+            <button class="chip" data-offset="1">Tomorrow</button>
+          </div>
+
+          <p class="scroll-hint animate-in delay-3">scroll ↓</p>
+        </div>
+
+        <!-- right character — the chosen star sign -->
+        <div class="col-6 col-md-3 d-flex justify-content-center order-2 order-md-3">
+          <div class="doodle-char animate-in delay-2">
+            <svg viewBox="0 0 270 210" role="img" aria-label="Your star sign">
+              <g filter="url(#roughen)" fill="none" stroke="#2B2B2B" stroke-width="4"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="135" cy="105" r="72" fill="#FFFFFF" />
+                <circle cx="135" cy="105" r="80" stroke-width="2.5" opacity=".3" />
+              </g>
+              <!-- a few stars, because a bare circle looked like a coin -->
+              <g fill="#C8D8E8" stroke="#2B2B2B" stroke-width="2">
+                <circle cx="40"  cy="52"  r="5" />
+                <circle cx="236" cy="66"  r="4" />
+                <circle cx="52"  cy="168" r="4" />
+                <circle cx="226" cy="160" r="5" />
+              </g>
+              <text id="signGlyph" x="135" y="105" text-anchor="middle"
+                    dominant-baseline="central" class="sign-glyph">♏︎</text>
+            </svg>
+            <p class="doodle-name" id="signName">Scorpio</p>
+            <p class="doodle-dates" id="signDates">23 Oct – 21 Nov</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 2 — THE ITEM ─────────────────────────── -->
+  <section class="snap-section section-item" id="item">
+    <div class="container">
+      <div class="row align-items-center g-5 justify-content-center">
+
+        <!-- luck dial -->
+        <div class="col-md-5 d-flex flex-column align-items-center">
+          <div class="luck-dial doodle" id="luckDial">
+            <svg class="ring" viewBox="0 0 200 200">
+              <circle class="ring-sketch" cx="100" cy="100" r="86" />
+              <circle class="ring-track"  cx="100" cy="100" r="86" />
+              <circle class="ring-fill"   cx="100" cy="100" r="86" id="ringFill" />
+            </svg>
+            <div class="dial-face">
+              <span class="dial-num" id="luckNum">—</span>
+              <span class="dial-label" id="luckLabel">luck today</span>
+            </div>
+          </div>
+          <div class="speech-bubble animate-in" id="readingBubble">—</div>
+        </div>
+
+        <!-- the item card -->
+        <div class="col-md-6">
+          <p class="section-heading animate-in">Carry this today</p>
+          <div class="doodle-box item-card animate-in delay-1">
+            <div class="item-icon" id="itemIcon">✦</div>
+            <p class="item-name" id="itemName">—</p>
+            <p class="item-note" id="itemNote">—</p>
+            <p class="item-stamp" id="itemStamp">—</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 3 — THE DETAILS ──────────────────────── -->
+  <section class="snap-section section-details" id="details">
+    <div class="container">
+      <div class="row g-4 justify-content-center">
+
+        <div class="col-12 text-center mb-1">
+          <p class="section-heading animate-in">The rest of the day's luck</p>
+        </div>
+
+        <div class="col-md-3 col-6">
+          <div class="doodle-box mini-card animate-in">
+            <p class="mini-label">Colour</p>
+            <span class="swatch" id="colourSwatch"></span>
+            <p class="mini-value" id="colourName">—</p>
+            <p class="mini-note">Wear it, or just look at it once.</p>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-6">
+          <div class="doodle-box mini-card animate-in delay-1">
+            <p class="mini-label">Number</p>
+            <p class="mini-big" id="luckyNumber">—</p>
+            <p class="mini-note" id="numberNote">—</p>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-6">
+          <div class="doodle-box mini-card animate-in delay-2">
+            <p class="mini-label">Direction</p>
+            <p class="mini-value" id="luckyDirection">—</p>
+            <p class="mini-note">Face it when you have to decide something.</p>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-6">
+          <div class="doodle-box mini-card animate-in delay-3">
+            <p class="mini-label">Hour</p>
+            <p class="mini-value" id="luckyHour">—</p>
+            <p class="mini-note" id="hourNote">—</p>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-12">
+          <div class="doodle-box strip-card char-card animate-in">
+            <p class="mini-label">Lucky character</p>
+            <p class="char-name" id="charName">—</p>
+            <p class="mini-note" id="charNote">—</p>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-12">
+          <div class="doodle-box strip-card animate-in delay-1">
+            <p class="mini-label">One small thing to do</p>
+            <p class="strip-text" id="microAction">—</p>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-12">
+          <div class="doodle-box strip-card warn animate-in delay-2">
+            <p class="mini-label">Go easy on</p>
+            <p class="strip-text" id="avoidThing">—</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 4 — LIVE HOROSCOPE ───────────────────────
+       The only part of this page that isn't ours. Pulled from
+       freehoroscopeapi.com (free, no API key). If the request
+       fails — offline, blocked, service down — the card says so
+       and the rest of the page carries on unaffected.          -->
+  <section class="snap-section section-horoscope" id="horoscope">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-9">
+
+          <p class="section-heading animate-in text-center" id="horoHeading">Today's reading</p>
+          <p class="section-text animate-in delay-1 text-center" style="max-width:520px;margin:0 auto 26px">
+            Everything else here we wrote. This one is fetched live.
+          </p>
+
+          <div class="doodle-box horo-card animate-in delay-2">
+            <div class="horo-head">
+              <span class="mini-label" style="margin:0" id="horoLabel">Daily horoscope</span>
+              <span class="horo-badge loading" id="horoBadge">loading</span>
+            </div>
+            <p class="horo-text" id="horoText">Fetching today's reading…</p>
+            <p class="horo-source" id="horoSource">
+              Source: <a href="https://freehoroscopeapi.com" target="_blank" rel="noopener">freehoroscopeapi.com</a>
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 4 — THE TWO SIGNS ────────────────────── -->
+  <section class="snap-section section-signs" id="signs">
+    <div class="container">
+      <div class="row align-items-center g-4">
+
+        <div class="col-md-7">
+          <p class="section-heading animate-in" id="blendHeading">&nbsp;</p>
+          <p class="section-text animate-in delay-1" id="blendText">—</p>
+
+          <div class="brings animate-in delay-2">
+            <div class="brings-col">
+              <p class="brings-head">The Rat brings</p>
+              <p class="brings-text" id="ratBrings">—</p>
+            </div>
+            <div class="brings-col">
+              <p class="brings-head" id="signBringsHead">Scorpio brings</p>
+              <p class="brings-text" id="signBrings">—</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-5 d-flex justify-content-center">
+          <div class="doodle-box element-card animate-in delay-1">
+            <p class="mini-label">Elements</p>
+            <div class="elem-pair">
+              <div>
+                <p class="elem-glyph">水</p>
+                <p class="elem-name">Rat · Water</p>
+              </div>
+              <div>
+                <p class="elem-glyph" id="signElemGlyph">水</p>
+                <p class="elem-name" id="signElemName">&nbsp;</p>
+              </div>
+            </div>
+            <p class="mini-note" id="blendNote">—</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 5 — SAVE ─────────────────────────────── -->
+  <section class="snap-section section-save" id="save">
+    <div class="container text-center">
+      <p class="section-heading animate-in">Take it with you</p>
+      <p class="section-text animate-in delay-1" style="max-width:560px;margin:0 auto 26px">
+        Save the day's card as a picture — lock screen, group chat, wherever
+        you'll actually see it.
+      </p>
+
+      <div class="save-actions animate-in delay-2">
+        <button class="bth bth-primary" id="saveBtn">⬇ Save today's card</button>
+        <button class="bth bth-soft" id="copyBtn">Copy as text</button>
+      </div>
+
+      <p class="disclaimer animate-in delay-3">
+        For fun, not for financial advice. Your luck is mostly what you do before 11am.
+      </p>
+    </div>
+  </section>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js" defer></script>
+</body>
+</html>

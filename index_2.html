@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUCKY — Year of the Rat</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Google Fonts — same pairing as HELPFUL -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style_1.css" />
+  <meta name="theme-color" content="#2B2B2B" />
+</head>
+
+<!-- No data-sign on this page: it is the chooser, so script.js
+     wires the menu and stops before building a reading. -->
+<body>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="roughen">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" result="n" />
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+    <filter id="roughen2">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" seed="19" result="n" />
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </svg>
+
+  <!-- ── NAV ──────────────────────────────────────────── -->
+  <nav class="nav-bar">
+    <div></div>
+    <a class="nav-logo" href="index_2.html" aria-label="LUCKY — home">LUCKY</a>
+    <button class="hamburger" id="menuBtn" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="overlay" id="overlay"></div>
+  <div class="side-menu" id="sideMenu">
+    <button class="menu-close" id="menuClose" aria-label="Close menu">✕</button>
+    <p class="menu-head">Year of the Rat ×</p>
+    <p class="menu-sub">Pick your star sign</p>
+    <div class="sign-list" id="signList"></div>
+  </div>
+
+  <!-- ── HERO ─────────────────────────────────────────── -->
+  <section class="snap-section hero" id="top">
+    <div class="container">
+      <div class="row align-items-center g-4 justify-content-center">
+
+        <div class="col-6 col-md-4 d-flex justify-content-center">
+          <div class="doodle-char animate-in">
+            <svg viewBox="0 0 270 210" role="img" aria-label="A hand-drawn rat">
+              <g filter="url(#roughen)" fill="none" stroke="#2B2B2B" stroke-width="4"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M64 142 C 40 158 18 148 20 128 C 21 116 30 112 36 116" />
+                <ellipse cx="128" cy="132" rx="66" ry="44" fill="#FFFFFF" />
+                <circle cx="196" cy="118" r="32" fill="#FFFFFF" />
+                <circle cx="190" cy="90" r="16" fill="#C8D8E8" />
+                <path d="M96 170 q 12 13 25 0" />
+                <path d="M146 172 q 12 13 25 0" />
+                <path d="M228 124 l 30 -11 M230 131 l 32 3 M226 137 l 24 15" />
+              </g>
+              <circle cx="209" cy="112" r="4" fill="#2B2B2B" />
+              <circle cx="226" cy="126" r="5.5" fill="#E8CFC8" stroke="#2B2B2B" stroke-width="2.5" />
+            </svg>
+            <p class="doodle-name">Rat</p>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-7 text-center text-md-start order-3 order-md-2">
+          <p class="hero-eyebrow animate-in">Today's lucky item for</p>
+          <h1 class="hero-tagline animate-in delay-1">
+            Year of the Rat,<br>
+            <span>whichever sign you are</span>
+          </h1>
+          <p class="hero-sub animate-in delay-2">
+            THE RAT IS FIXED. PICK THE OTHER HALF BELOW.
+          </p>
+          <p class="scroll-hint animate-in delay-3">scroll ↓</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── THE TWELVE ───────────────────────────────────── -->
+  <section class="snap-section section-signs" id="pick">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 text-center">
+          <p class="section-heading animate-in">Pick your star sign</p>
+          <p class="section-text animate-in delay-1" style="max-width:520px;margin:0 auto 26px">
+            Each one gets its own page — same Rat, different half.
+          </p>
+
+          <div class="sign-grid animate-in delay-2">
+            <a class="sign-card" href="aries.html">
+              <span class="g">♈︎</span>
+              <span class="n">Aries</span>
+              <span class="d">21 Mar – 19 Apr</span>
+            </a>
+            <a class="sign-card" href="taurus.html">
+              <span class="g">♉︎</span>
+              <span class="n">Taurus</span>
+              <span class="d">20 Apr – 20 May</span>
+            </a>
+            <a class="sign-card" href="gemini.html">
+              <span class="g">♊︎</span>
+              <span class="n">Gemini</span>
+              <span class="d">21 May – 20 Jun</span>
+            </a>
+            <a class="sign-card" href="cancer.html">
+              <span class="g">♋︎</span>
+              <span class="n">Cancer</span>
+              <span class="d">21 Jun – 22 Jul</span>
+            </a>
+            <a class="sign-card" href="leo.html">
+              <span class="g">♌︎</span>
+              <span class="n">Leo</span>
+              <span class="d">23 Jul – 22 Aug</span>
+            </a>
+            <a class="sign-card" href="virgo.html">
+              <span class="g">♍︎</span>
+              <span class="n">Virgo</span>
+              <span class="d">23 Aug – 22 Sep</span>
+            </a>
+            <a class="sign-card" href="libra.html">
+              <span class="g">♎︎</span>
+              <span class="n">Libra</span>
+              <span class="d">23 Sep – 22 Oct</span>
+            </a>
+            <a class="sign-card" href="scorpio.html">
+              <span class="g">♏︎</span>
+              <span class="n">Scorpio</span>
+              <span class="d">23 Oct – 21 Nov</span>
+            </a>
+            <a class="sign-card" href="sagittarius.html">
+              <span class="g">♐︎</span>
+              <span class="n">Sagittarius</span>
+              <span class="d">22 Nov – 21 Dec</span>
+            </a>
+            <a class="sign-card" href="capricorn.html">
+              <span class="g">♑︎</span>
+              <span class="n">Capricorn</span>
+              <span class="d">22 Dec – 19 Jan</span>
+            </a>
+            <a class="sign-card" href="aquarius.html">
+              <span class="g">♒︎</span>
+              <span class="n">Aquarius</span>
+              <span class="d">20 Jan – 18 Feb</span>
+            </a>
+            <a class="sign-card" href="pisces.html">
+              <span class="g">♓︎</span>
+              <span class="n">Pisces</span>
+              <span class="d">19 Feb – 20 Mar</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js" defer></script>
+</body>
+</html>
